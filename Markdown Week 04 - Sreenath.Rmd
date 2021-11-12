@@ -1,0 +1,77 @@
+---
+title: "ANA 515 Assignment 02"
+author: Sreenath Umagandhi
+date: 11-12-2021
+output: 
+  html_document:
+    theme:
+      bootswatch: slate
+---
+
+```{r setup, include = FALSE}
+
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(knitr)
+```
+
+```{r, include = TRUE}
+#  | Section 01 |
+#  The data set I am using is about the US weather in terms of temperature and precipitation, 
+#  especially for the city of Seattle. Most of the columns indicates the temperature in terms of Fahrenheit. 
+#  This data was collected from a weather package called "Weather Underground". 
+#  This data would be very useful in visualizing the maximum and minimum temperature for the day for that particular      year. 
+#  This information is useful for the following year because according to the temperature, we can be well 
+#  prepared for a harsh day. 
+#  The data set is available in .csv format which can be easily read into R studio as it has already been segmented by
+#  columns and rows.
+
+```
+
+```{r, include = TRUE}
+# | Section 02 |
+url <- "https://raw.githubusercontent.com/fivethirtyeight/data/master/us-weather-history/KSEA.csv"
+seattle_weather <- read.csv(url)
+# I am using read.csv() function to read the data into an object. I believe this is a base R function.
+```
+
+```{r, include = TRUE}
+# | Section 03 |
+# Create subset of this data, where I am trying to eliminate the columns that has the years, precipitation which is irrelevant in my use case
+colnames(seattle_weather) # I am wanting to see the column names before cleaning
+seattle_temp <- subset(seattle_weather, select = -c(record_min_temp_year,record_max_temp_year,actual_precipitation,
+                                                    average_precipitation,record_precipitation))
+colnames(seattle_temp) # I am wanting to see the column names after cleaning
+
+```
+
+```{r, include = TRUE}
+# | Section 04 |
+```
+The data frame has `r nrow(seattle_temp)` rows and `r ncol(seattle_temp)` columns of Seattle weather. The names and brief description of the columns are in the table below:
+
+```{r, include = FALSE}
+df <- data.frame("NO." = 1:8,
+                 "Variable" = c("date","actual_mean_temp","actual_min_temp","actual_max_temp","average_min_temp",
+                                "average_max_temp","record_min_temp","record_max_temp"), 
+                 "Description" = c("The date of the weather record, formatted YYYY-M-D",
+                                   "The measured average temperature for that day",
+                                   "The measured minimum temperature for that day",
+                                   "The measured maximum temperature for that day",
+                                   "The average minimum temperature on that day since 1880",
+                                   "The average maximum temperature on that day since 1880",
+                                   "The lowest ever temperature on that day since 1880",
+                                   "The highest ever temperature on that day since 1880"))
+```
+
+```{r, include = TRUE}
+knitr::kable(df)
+```
+
+```{r, include = TRUE}
+# | Section 05 |
+seattle_three <- subset(seattle_weather, select = c(actual_mean_temp,actual_min_temp,actual_max_temp))
+summary_three <- summary(seattle_three)
+print(summary_three)
+```
